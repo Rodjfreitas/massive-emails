@@ -124,12 +124,12 @@ while True:
         print('     --> Na coluna nome, insira o nome exatamente igual ao nome da pasta onde será inserido os arquivos.')
         print(
             '     --> Na coluna assunto, coloque exatamente o título do assunto do email.')
-        print('     --> Na colua E-mail, preencha o email corretamente. pode inserir mais de um email, porém    devem ser separados por ponto e vírgula.')
+        print('     --> Na colua E-mail, preencha o email corretamente. pode inserir mais de um email, porém devem ser separados por ponto e vírgula.')
 
         print('\n\033[32m2) Informar Diretórios (opção 5)\033[m')
-        print('     --> Vá na diretório onde você salvou o arquivo excel, clique com botão esquerdo do mouse e selecione "copiar como caminho".')
+        print('     --> Vá no diretório onde você salvou o arquivo excel, clique com botão esquerdo do mouse e selecione "copiar como caminho".')
         print('     --> cole o caminho na opção "Diretório do Excel".')
-        print('     \033[31m--> IMPORTANTE: SE COLAR AS ASPAS DUPLAS " NO INICION E NO FINAL, APAGUE-AS.\033[m')
+        print('     \033[31m--> IMPORTANTE: SE COLAR AS ASPAS DUPLAS " NO INICIO E NO FINAL, APAGUE-AS.\033[m')
         print('     --> Da mesma forma, insira o local do diretório onde se encontram as pastas que contém os arquivos na opção "Diretório das Pastas"')
         print('     \033[31m--> IMPORTANTE: Cada pasta deve ser nomeada com o mesmo nome na planilha.')
         print('     --> IMPORTANTE: Só enviará arquivo com extensão ".pdf".\033[m')
