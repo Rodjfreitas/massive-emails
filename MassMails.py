@@ -1,8 +1,11 @@
 import dados
 from time import sleep
+<<<<<<< HEAD
 from tkinter import *
 
 
+=======
+>>>>>>> 273fbe32ae6a35a8bc65a5c749331c135438468e
 
 login_usuario = None
 senha_usuario = None
@@ -47,11 +50,22 @@ while True:
             nome = valor[0]
             email = valor[2]
             anexo = f'{diretorio_pastas}\\{nome}'
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 273fbe32ae6a35a8bc65a5c749331c135438468e
             retorno_envio = dados.enviarEmail(login_usuario, senha_usuario, assunto,
                                                     email, com_copia, conteudo, anexo, assinatura, nome)
             if retorno_envio == 'Erro':
                 break
             email_enviados.append(retorno_envio)
+<<<<<<< HEAD
+=======
+=======
+            email_enviados.append(dados.enviarEmail(login_usuario, senha_usuario, assunto,
+                                                    email, com_copia, conteudo, anexo, assinatura, nome))
+>>>>>>> 4d6802f14ad209652456edfd0ce8bb7f8e4d694a
+>>>>>>> 273fbe32ae6a35a8bc65a5c749331c135438468e
             assunto = ''
             sleep(0.2)
         print('\n\n\n\033[32mProcesso de envio concluído\033[m')
@@ -75,10 +89,14 @@ while True:
         conteudo = f'Olá, {dados.saudacao()}!\n{conteudo_unificado}'
 
         dados.titulo('Assinatura e CC(com cópia)')
+<<<<<<< HEAD
         nome_assinatura = input('Nome da Assinatura: ')
         cargo_assinatura = input('Cargo/Empresa da Assinatura: ')
         contato_assinatura = input('Contato da Assinatura: ')
         assinatura = f'{nome_assinatura}\n{cargo_assinatura}\n{contato_assinatura}'
+=======
+        assinatura = input('Conteúdo da Assinatura: ')
+>>>>>>> 273fbe32ae6a35a8bc65a5c749331c135438468e
         com_copia = input('Copiar Alguem? ')
         if not com_copia:
             com_copia = None
@@ -101,12 +119,28 @@ while True:
             if resposta == 'S':
                 dados.salvanoArquivo(email_enviados)
                 break
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 273fbe32ae6a35a8bc65a5c749331c135438468e
             print(
                 f'{"NOME":<36}{"ASSUNTO":<40}{"EMAIL":<50}{"STATUS":<20}')
             for pos, valor in enumerate(email_enviados):
                 print(
                     f'{pos + 1:<3} - {valor["nome"]:<30}{valor["assunto"]:<40}{valor["email"]:<50}{valor["status"]:<20}')
             break
+<<<<<<< HEAD
+=======
+=======
+            else:
+                print(
+                    f'{"NOME":<36}{"ASSUNTO":<40}{"EMAIL":<50}{"STATUS":<20}')
+                for pos, valor in enumerate(email_enviados):
+                    print(
+                        f'{pos + 1:<3} - {valor["nome"]:<30}{valor["assunto"]:<40}{valor["email"]:<50}{valor["status"]:<20}')
+                break
+>>>>>>> 4d6802f14ad209652456edfd0ce8bb7f8e4d694a
+>>>>>>> 273fbe32ae6a35a8bc65a5c749331c135438468e
         dados.linha()
 
     # Buscar caminho do arquivo
@@ -172,4 +206,7 @@ while True:
     elif resposta == len(menu_opcoes):
         dados.titulo('Até logo')
         break
+<<<<<<< HEAD
 
+=======
+>>>>>>> 273fbe32ae6a35a8bc65a5c749331c135438468e
