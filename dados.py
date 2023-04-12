@@ -24,7 +24,11 @@ def enviarEmail(usuario, senha_usuario, assunto, destinatario, com_copia, conteu
         server = smtplib.SMTP(host, port)
         server.ehlo()
         server.starttls()
-        server.login(EMAIL_ADRESS, EMAIL_PASSWORD)
+        try:
+            server.login(EMAIL_ADRESS, EMAIL_PASSWORD)
+        except:
+            print('\033[31mLogin ou Senha incorretos. revise-os.\033[m')
+            return 'Erro'
 
         # Criar um email
         msg = MIMEMultipart()
@@ -36,20 +40,24 @@ def enviarEmail(usuario, senha_usuario, assunto, destinatario, com_copia, conteu
             MIMEText(f'{conteudo}\n\n\nAtenciosamente, \n{assinatura}', 'plain'))
         # msg.attach(MIMEText(f'\n\n\nAtenciosamente, \n{assinatura}', 'plain'))
 
-        # Anexar arquivos
-        pdf_folder = caminho_anexo
-        pdf_files = [os.path.join(pdf_folder, f) for f in os.listdir(
-            pdf_folder) if f.endswith('.pdf')]
-        qtd_files = 0
+        try:
+            # Anexar arquivos
+            pdf_folder = caminho_anexo
+            pdf_files = [os.path.join(pdf_folder, f) for f in os.listdir(
+                pdf_folder) if f.endswith('.pdf')]
+            qtd_files = 0
 
-        for file in pdf_files:
-            part = MIMEBase('application', 'octet-stream')
-            part.set_payload(open(file, 'rb').read())
-            encoders.encode_base64(part)
-            part.add_header('content-Disposition', 'attachment',
-                            filename=os.path.basename(file))
-            msg.attach(part)
-            qtd_files += 1
+            for file in pdf_files:
+                part = MIMEBase('application', 'octet-stream')
+                part.set_payload(open(file, 'rb').read())
+                encoders.encode_base64(part)
+                part.add_header('content-Disposition', 'attachment',
+                                filename=os.path.basename(file))
+                msg.attach(part)
+                qtd_files += 1
+        except (FileNotFoundError):
+            pdf_folder = ''
+            qtd_files = 0
 
         # Enviar email
         server.sendmail(msg['From'], msg['To'], msg.as_string())
@@ -62,19 +70,25 @@ def enviarEmail(usuario, senha_usuario, assunto, destinatario, com_copia, conteu
         envio['status'] = 'Enviado'
         if qtd_files == 0:
             envio['obs'] = 'Não foi enviado arquivo(s). Vefificar Diretório Informado'
-            print(f'\033[33mAtençaõ: Enviado sem anexos.\033[m - {assunto}')
+            print(
+                f'\033[33m{"Atençaõ: Enviado sem anexos":^30}\033[m assunto: {assunto:<100}')
         else:
             if qtd_files == 1:
                 envio['obs'] = f'{qtd_files} arquivo enviado'
             else:
                 envio['obs'] = f'{qtd_files} arquivos enviados'
-            print(f'\033[32mEmail Enviado\033[m - {assunto}')
+            print(
+                f'\033[32m{"Email Enviado":^30}\033[m assunto: {assunto:<100}')
         return envio
     except:
-        print(f'\033[31mEmail Não Enviado\033[m - {assunto}')
+        print(
+            f'\033[31m{"Email Não Enviado":^30}\033[m assunto: {assunto:<100}')
         envio['nome'] = nome_destinatario
         envio['assunto'] = assunto
-        envio['email'] = 'Inválido / Não informado'
+        if msg['To'] is None:
+            envio['email'] = 'Inválido / Não informado'
+        else:
+            envio['email'] = destinatario
         envio['status'] = 'Não Enviado'
         if qtd_files != 0:
             envio['obs'] = 'Email Inválido ou não informado'
@@ -94,9 +108,9 @@ def titulo(msg):
 
 
 def menu(lista):
-    titulo('Mass&Mails')
+    titulo('Mass&Mails - by Rodrigo Freitas -- v.1.1')
     for pos, valor in enumerate(lista):
-        print(f'{pos + 1:>3} -- {valor:30}')
+        print(f'\033[33m{pos + 1:>3}\033[m -- \033[34m{valor:30}\033[m')
     linha()
     while True:
         try:
@@ -156,7 +170,7 @@ def salvanoArquivo(lista):
     arquivo = openpyxl.Workbook()
     planilha = arquivo.active
     planilha.title = 'Relatório de emails disparados'
-    cabecalho_colunas = ['Nome', 'Assunto', 'Email', 'Obs:']
+    cabecalho_colunas = ['Nome', 'Assunto', 'Email', 'Status', 'Obs:']
 
     for coluna, cabecalho in enumerate(cabecalho_colunas, start=1):
         planilha.cell(row=1, column=coluna).value = cabecalho
@@ -176,18 +190,16 @@ def salvanoArquivo(lista):
 def imprimirLista(lista):
     titulo('RELAÇÃO PARA ENVIO')
     for pos, valor in enumerate(lista):
-        for campo in valor:
-            if campo is None:
-                campo == 'não informado'
         try:
             if pos == 0:
                 print(
-                    f'{valor[0]:23}{valor[1]:20}{valor[3]:50}{valor[4]:50}')
+                    f'{valor[0]:<46}{valor[1]:<30}{valor[2]:<60}')
                 continue
             print(
-                f'{pos:3}{valor[0]:20}{valor[1]:20}{valor[3]:50}{valor[4]:50}')
+                f'{pos:<3} - {valor[0]:<40}{valor[1]:<30}{valor[2]:<60}')
         except:
-            print(f'\033[31mAlgum dado de {valor[0]} está incompleto.\033[m')
+            print(
+                f'{pos:<3}\033[31m - IMPORTANTE: Revise os dados de {valor[0]} na planilha origem.\033[m\n')
             continue
     linha()
 
